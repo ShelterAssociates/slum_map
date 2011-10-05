@@ -1,9 +1,0 @@
-;$Id$
-name = Slum Map
-description = Display Shelter Associates Factsheets on a Map
-package = Shelter Associates
-core = 7.x
-files[] = slum_map.module
-
-;dependencies[] = autoload
-;php = 5.2
