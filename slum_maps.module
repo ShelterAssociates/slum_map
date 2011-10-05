@@ -5,3 +5,70 @@
  */
 
 include_once('slum_maps.features.inc');
+
+/**
+ * Implement hook_theme()
+ */
+function slum_maps_theme($existing, $type, $theme, $path) {
+    return array(
+        'slum_map' => array(
+            'template' => 'theme/slum-map',
+            'variables' => array(
+                'tid' => 'none',
+            ),
+        ),
+    );
+}
+/**
+ * Implement hook_menu()
+ */
+function slum_maps_menu() {
+    $items = array();
+
+    $items['slum-map/%'] = array(
+        'title' => 'Slums by City',
+        'description' => 'Show a map of slums for a given city',
+        'page callback' => 'slum_maps_city_map',
+        'page arguments' => array(1),
+        'access arguments' => array('administer users'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+    return $items;
+}
+
+/**
+ * Callback to display a google map of slums in a particular
+ * city.
+ */
+function slum_maps_city_map($city_term_id) {
+    // get the taxonomy term id
+    $terms = taxonomy_get_term_by_name($city_term_id);
+    if (empty($terms))
+        drupal_not_found();
+    foreach ($terms as $tid => $term) {
+        // should be only one item in the array
+        break;
+    }
+
+    // create the google map and make the term ID available for callbacks
+    $vars = array(
+        'tid' => $tid,
+        'longitude' => $term->field_longitude['und'][0]['value'],
+        'latitude' => $term->field_latitude['und'][0]['value'],
+    );
+    return theme('slum_map', $vars);
+}
+
+function slum_maps_preprocess_slum_map($variables) {
+    $path = drupal_get_path('module', 'slum_maps');
+    drupal_add_js('http://maps.googleapis.com/maps/api/js?v=3&sensor=false', 'external');
+    drupal_add_js($path . '/js/slum_maps.js');
+    drupal_add_css($path . '/css/slum_maps.css');
+
+    $js_map_globals = <<<EOD
+    window.slumMapCenterLat = {$variables['latitude']};
+    window.slumMapCenterLong = {$variables['longitude']};
+    window.slumMapCityId = {$variables['tid']};
+EOD;
+    drupal_add_js($js_map_globals, 'inline');
+}
