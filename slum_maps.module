@@ -14,7 +14,17 @@ function slum_maps_theme($existing, $type, $theme, $path) {
         'slum_map' => array(
             'template' => 'theme/slum-map',
             'variables' => array(
-                'tid' => 'none',
+                'tid' => NULL,
+                'latitude' => NULL,
+                'longitude' => NULL,
+                'path' => NULL,
+            ),
+        ),
+        'ward_map' => array(
+            'template' => 'theme/ward-map',
+            'variables' => array(
+                'tid' => NULL,
+                'shape' => NULL,
             ),
         ),
     );
@@ -30,45 +40,113 @@ function slum_maps_menu() {
         'description' => 'Show a map of slums for a given city',
         'page callback' => 'slum_maps_city_map',
         'page arguments' => array(1),
-        'access arguments' => array('administer users'),
+        'access arguments' => array('view published content'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['slum-map/%/%'] = array(
+        'title' => 'Slums by City',
+        'description' => 'Show a map of slums for a given city',
+        'page callback' => 'slum_maps_city_ward_map',
+        'page arguments' => array(1, 2),
+        'access arguments' => array('view published content'),
         'type' => MENU_NORMAL_ITEM,
     );
     return $items;
 }
 
-/**
- * Callback to display a google map of slums in a particular
- * city.
- */
-function slum_maps_city_map($city_term_id) {
+function _term_obj_from_name($name) {
     // get the taxonomy term id
-    $terms = taxonomy_get_term_by_name($city_term_id);
+    $terms = taxonomy_get_term_by_name($name);
     if (empty($terms))
         drupal_not_found();
     foreach ($terms as $tid => $term) {
         // should be only one item in the array
         break;
     }
+    return $term;
+}
 
+function _city_vars($city_term_name) {
+    $term = _term_obj_from_name($city_term_name);
     // create the google map and make the term ID available for callbacks
-    $vars = array(
-        'tid' => $tid,
+    return array(
+        'tid' => $term->tid,
         'longitude' => $term->field_longitude['und'][0]['value'],
         'latitude' => $term->field_latitude['und'][0]['value'],
     );
+}
+
+/**
+ * Callback to display a google map of slums in a particular
+ * city.
+ */
+function slum_maps_city_map($city_term_name) {
+    return theme('slum_map', _city_vars($city_term_name));
+}
+
+/**
+ * Page callback to display a google map of slums in a particular
+ * ward in a city.
+ */
+function slum_maps_city_ward_map($city_term_name, $ward_term_name) {
+    $vars = _city_vars($city_term_name);
+
+    // extend vars to include ward information
+    $ward_term = _term_obj_from_name($ward_term_name);
+
+    $vars['ward_id'] = $ward_term->tid;
+    if (! empty($ward_term->field_geo_polygon))
+        $vars['ward_shape'] = $ward_term->field_geo_polygon['und'][0]['value'];
+    else
+        $vars['ward_shape'] = '';
+
     return theme('slum_map', $vars);
 }
 
 function slum_maps_preprocess_slum_map($variables) {
+    $path = _add_media();
+    $variables['path'] = $path;
+    return $variables;
+}
+
+function _add_media() {
     $path = drupal_get_path('module', 'slum_maps');
     drupal_add_js('http://maps.googleapis.com/maps/api/js?v=3&sensor=false', 'external');
     drupal_add_js($path . '/js/slum_maps.js');
     drupal_add_css($path . '/css/slum_maps.css');
+    return $path;
+}
 
-    $js_map_globals = <<<EOD
-    window.slumMapCenterLat = {$variables['latitude']};
-    window.slumMapCenterLong = {$variables['longitude']};
-    window.slumMapCityId = {$variables['tid']};
-EOD;
-    drupal_add_js($js_map_globals, 'inline');
+function slum_maps_field_formatter_info() { 
+    return array(
+        'slum_maps_ward_map' => array(
+            'label' => 'Display a shape definition on a google map',
+            'field types' => array('text_long'),
+        ),
+    );
+}
+
+/**
+ * define a custom formatter that can turn a shape definition into a 
+ * google map
+ */
+function slum_maps_field_formatter_view($obj_type, $object, $field, $instance, 
+                                        $langcode, $items, $display) {
+    $element = array();
+    if ($display['type'] == 'slum_maps_ward_map') {
+        foreach ($items as $delta => $item) {
+            $vars = array(
+                'tid' => $object->tid,
+                'shape' => $item['value'],
+            );
+            $element[$delta] = array('#markup' => theme('ward_map', $vars));
+        }
+    }
+    return $element;
+}
+
+function slum_maps_preprocess_ward_map($variables) {
+    $tid = $variables['tid'];
+    $shape = $variables['shape'];
+    return $variables;
 }

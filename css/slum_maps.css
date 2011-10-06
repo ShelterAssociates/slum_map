@@ -1,3 +1,20 @@
 #slum-map {
-    height: 400px;
+    height: 500px;
+}
+
+.slum-info-window {
+    font-size: 0.8em;
+    width: 300px;
+}
+.slum-info-window img {
+    float: left;
+    margin-right: 5px;
+}
+.slum-info-window h3 {
+    margin: 0;
+    padding: 0;
+}
+.slum-info-window p {
+    margin: 0;
+    padding: 0;
 }
