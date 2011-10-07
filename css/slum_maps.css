@@ -2,19 +2,36 @@
     height: 500px;
 }
 
+#slum-map.ward-map,
+#slum-map.individual-slum-map {
+    height: 350px;
+}
 .slum-info-window {
     font-size: 0.8em;
-    width: 300px;
+    height: 220px;
 }
 .slum-info-window img {
-    float: left;
-    margin-right: 5px;
+    float: right;
+    margin-left: 15px;
+    margin-right: 15px;
+    max-height: 120px;
 }
 .slum-info-window h3 {
+    font-size: 1.6em;
     margin: 0;
     padding: 0;
 }
 .slum-info-window p {
     margin: 0;
     padding: 0;
+}
+
+/* MUNICIPAL WARD PAGE */
+.term-listing-heading .vocabulary-municipal-wards {
+    margin-bottom: 40px;
+}
+/* INDIVIDUAL SLUM PAGE */
+.node-slum .field-name-field-photos {
+    float: right;
+    margin-left: 10px;
 }

@@ -1,4 +1,4 @@
-<div id='slum-map'>
+<div id='slum-map' class='individual-slum-map'>
     <script type="text/javascript">
     <!--//--><![CDATA[//><!--
     jQuery(document).ready(function () {

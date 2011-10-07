@@ -17,7 +17,6 @@ function slum_maps_theme($existing, $type, $theme, $path) {
                 'city_id' => NULL,
                 'latitude' => NULL,
                 'longitude' => NULL,
-                'path' => NULL,
             ),
         ),
         'ward_map' => array(
@@ -26,9 +25,16 @@ function slum_maps_theme($existing, $type, $theme, $path) {
                 'city_id' => NULL,
                 'latitude' => NULL,
                 'longitude' => NULL,
-                'path' => NULL,
                 'ward_id' => NULL,
                 'ward_shape' => NULL,
+            ),
+        ),
+        'all_ward_map' => array(
+            'template' => 'theme/all-ward-map',
+            'variables' => array(
+                'city_id' => NULL,
+                'latitude' => NULL,
+                'longitude' => NULL,
             ),
         ),
         'individual_slum_map' => array(
@@ -39,18 +45,27 @@ function slum_maps_theme($existing, $type, $theme, $path) {
         ),
     );
 }
+
 /**
  * Implement hook_menu()
  */
 function slum_maps_menu() {
     $items = array();
 
+    $items['ward-map/%'] = array(
+        'title' => 'Wards by City',
+        'description' => 'Show a map of slums for a given city',
+        'page callback' => 'slum_maps_ward_shapes',
+        'page arguments' => array(1),
+        'access arguments' => array('access content'),
+        'type' => MENU_NORMAL_ITEM,
+    );
     $items['slum-map/%'] = array(
         'title' => 'Slums by City',
         'description' => 'Show a map of slums for a given city',
         'page callback' => 'slum_maps_city_map',
         'page arguments' => array(1),
-        'access arguments' => array('view published content'),
+        'access arguments' => array('access content'),
         'type' => MENU_NORMAL_ITEM,
     );
     $items['slum-map/%/%'] = array(
@@ -58,7 +73,7 @@ function slum_maps_menu() {
         'description' => 'Show a map of slums for a given city',
         'page callback' => 'slum_maps_city_ward_map',
         'page arguments' => array(1, 2),
-        'access arguments' => array('view published content'),
+        'access arguments' => array('access content'),
         'type' => MENU_NORMAL_ITEM,
     );
     return $items;
@@ -115,18 +130,14 @@ function slum_maps_city_ward_map($city_term_name, $ward_term_name) {
     return theme('slum_map', $vars);
 }
 
-function template_preprocess_slum_map(&$variables) {
-    $module_path = _add_media();
-    $variables['path'] = "/$module_path/files";
+/**
+ * Page callback to display wards.
+ */
+function slum_maps_ward_shapes($city_term_name) {
+    $vars = _city_vars($city_term_name);
+    return theme('all_ward_map', $vars);
 }
 
-function _add_media() {
-    $path = drupal_get_path('module', 'slum_maps');
-    drupal_add_js('http://maps.googleapis.com/maps/api/js?v=3&sensor=false', 'external');
-    drupal_add_js($path . '/js/slum_maps.js');
-    drupal_add_css($path . '/css/slum_maps.css');
-    return $path;
-}
 
 /**
  * define a custom formatter that can turn a shape definition into a 
@@ -169,10 +180,22 @@ function slum_maps_field_formatter_view($obj_type, $object, $field, $instance,
     return $element;
 }
 
+function _add_media() {
+    $path = drupal_get_path('module', 'slum_maps');
+    drupal_add_js('http://maps.googleapis.com/maps/api/js?v=3&sensor=false', 'external');
+    drupal_add_js($path . '/js/slum_maps.js');
+    drupal_add_css($path . '/css/slum_maps.css');
+}
+function template_preprocess_slum_map(&$variables) {
+    _add_media();
+}
 function template_preprocess_ward_map(&$variables) {
     template_preprocess_slum_map(&$variables);
 }
-
+function template_preprocess_all_ward_map(&$variables) {
+    error_log(print_r($variables, TRUE));
+    template_preprocess_slum_map(&$variables);
+}
 function template_preprocess_individual_slum_map(&$variables) {
     _add_media();
 }
