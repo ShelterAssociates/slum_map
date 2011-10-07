@@ -113,7 +113,7 @@ var ClickableWardMarker = function (slumMap, ward) {
       strokeOpacity: 0.8,
       strokeWeight: 1,
       fillColor: colour,
-      fillOpacity: 0.35,
+      fillOpacity: 0.45,
       map: slumMap.map
     });
 
@@ -160,9 +160,9 @@ var slumMapUtils = {
       case 'Bibwewadi Ward': 
         return '#EA7525';
       case 'Aundh Ward': 
-        return '#392C13';
-      case 'Bhavani Peth Ward': 
         return '#4A748C';
+      case 'Bhavani Peth Ward': 
+        return '#392C13';
       default:
         return '#0D1B24';
     }
