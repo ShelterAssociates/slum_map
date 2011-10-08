@@ -13,7 +13,7 @@ function slum_maps_taxonomy_default_vocabularies() {
       'name' => 'Cities',
       'machine_name' => 'cities',
       'description' => '',
-      'hierarchy' => '0',
+      'hierarchy' => '1',
       'module' => 'taxonomy',
       'weight' => '0',
       'rdf_mapping' => array(
@@ -36,7 +36,7 @@ function slum_maps_taxonomy_default_vocabularies() {
       'name' => 'Municipal Wards',
       'machine_name' => 'municipal_wards',
       'description' => '',
-      'hierarchy' => '0',
+      'hierarchy' => '1',
       'module' => 'taxonomy',
       'weight' => '0',
       'rdf_mapping' => array(

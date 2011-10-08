@@ -365,18 +365,18 @@ function slum_maps_field_default_fields() {
       'description' => 'Enter a brief description of this slum.',
       'display' => array(
         'default' => array(
-          'label' => 'above',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '0',
-        ),
-        'teaser' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
           'weight' => '1',
+        ),
+        'teaser' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '0',
         ),
       ),
       'entity_type' => 'node',
@@ -439,11 +439,11 @@ function slum_maps_field_default_fields() {
       'description' => 'Enter the city in which this slum is located',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => '3',
+          'weight' => '4',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -524,11 +524,11 @@ function slum_maps_field_default_fields() {
       'description' => 'If this slum is being redeveloped or relocated, reference the Development project in question.',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => '2',
+          'weight' => '3',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -558,7 +558,7 @@ function slum_maps_field_default_fields() {
   $fields['node-slum-field_file'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '6',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_file',
@@ -590,11 +590,11 @@ function slum_maps_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'file',
           'settings' => array(),
           'type' => 'file_default',
-          'weight' => '1',
+          'weight' => '2',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -605,7 +605,7 @@ function slum_maps_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_file',
-      'label' => 'Factsheets',
+      'label' => 'Factsheet',
       'required' => 0,
       'settings' => array(
         'description_field' => 1,
@@ -681,9 +681,9 @@ function slum_maps_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'hidden',
-          'module' => 'text',
+          'module' => 'slum_maps',
           'settings' => array(),
-          'type' => 'text_default',
+          'type' => 'slum_maps_slum_map',
           'weight' => '6',
         ),
         'teaser' => array(
@@ -709,120 +709,6 @@ function slum_maps_field_default_fields() {
         ),
         'type' => 'text_textarea',
         'weight' => '7',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-slum-field_latitude'
-  $fields['node-slum-field_latitude'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_latitude',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'module' => 'number',
-      'settings' => array(
-        'decimal_separator' => '.',
-      ),
-      'translatable' => '1',
-      'type' => 'number_float',
-    ),
-    'field_instance' => array(
-      'bundle' => 'slum',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '7',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '8',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_latitude',
-      'label' => 'Latitude',
-      'required' => 0,
-      'settings' => array(
-        'max' => '90',
-        'min' => '-90',
-        'prefix' => '',
-        'suffix' => '',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '5',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-slum-field_longitude'
-  $fields['node-slum-field_longitude'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_longitude',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'module' => 'number',
-      'settings' => array(
-        'decimal_separator' => '.',
-      ),
-      'translatable' => '1',
-      'type' => 'number_float',
-    ),
-    'field_instance' => array(
-      'bundle' => 'slum',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '8',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '7',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_longitude',
-      'label' => 'Longitude',
-      'required' => 0,
-      'settings' => array(
-        'max' => '180',
-        'min' => '-180',
-        'prefix' => '',
-        'suffix' => '',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '6',
       ),
     ),
   );
@@ -862,24 +748,20 @@ function slum_maps_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'image',
           'settings' => array(
             'image_link' => '',
-            'image_style' => '',
+            'image_style' => 'square_thumbnail',
           ),
           'type' => 'image',
-          'weight' => '5',
+          'weight' => '0',
         ),
         'teaser' => array(
           'label' => 'above',
-          'module' => 'colorbox',
-          'settings' => array(
-            'colorbox_image_style' => '',
-            'colorbox_node_style' => '',
-          ),
-          'type' => 'colorbox',
-          'weight' => '0',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '1',
         ),
       ),
       'entity_type' => 'node',
@@ -970,11 +852,11 @@ function slum_maps_field_default_fields() {
       'description' => 'Select the correct ward for this slum',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => '4',
+          'weight' => '5',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -996,6 +878,120 @@ function slum_maps_field_default_fields() {
         'settings' => array(),
         'type' => 'options_select',
         'weight' => '9',
+      ),
+    ),
+  );
+
+  // Exported field: 'taxonomy_term-cities-field_latitude'
+  $fields['taxonomy_term-cities-field_latitude'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_latitude',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'number',
+      'settings' => array(
+        'decimal_separator' => '.',
+      ),
+      'translatable' => '1',
+      'type' => 'number_float',
+    ),
+    'field_instance' => array(
+      'bundle' => 'cities',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => 1,
+            'scale' => '2',
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '1',
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_latitude',
+      'label' => 'Latitude',
+      'required' => 1,
+      'settings' => array(
+        'max' => '90',
+        'min' => '-90',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
+        'weight' => '32',
+      ),
+    ),
+  );
+
+  // Exported field: 'taxonomy_term-cities-field_longitude'
+  $fields['taxonomy_term-cities-field_longitude'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_longitude',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'number',
+      'settings' => array(
+        'decimal_separator' => '.',
+      ),
+      'translatable' => '1',
+      'type' => 'number_float',
+    ),
+    'field_instance' => array(
+      'bundle' => 'cities',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '2',
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_longitude',
+      'label' => 'Longitude',
+      'required' => 1,
+      'settings' => array(
+        'max' => '180',
+        'min' => '-180',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
+        'weight' => '34',
       ),
     ),
   );
@@ -1035,16 +1031,23 @@ function slum_maps_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '1',
+          'weight' => '4',
+        ),
+        'full' => array(
+          'label' => 'inline',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '4',
         ),
       ),
       'entity_type' => 'taxonomy_term',
       'field_name' => 'field_amc',
-      'label' => 'Assistant Municipal Commissioner',
+      'label' => 'Ward Officer',
       'required' => 0,
       'settings' => array(
         'text_processing' => '0',
@@ -1058,6 +1061,81 @@ function slum_maps_field_default_fields() {
         ),
         'type' => 'text_textfield',
         'weight' => '35',
+      ),
+    ),
+  );
+
+  // Exported field: 'taxonomy_term-municipal_wards-field_city'
+  $fields['taxonomy_term-municipal_wards-field_city'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_city',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'cities',
+            'parent' => '0',
+          ),
+        ),
+      ),
+      'translatable' => '1',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'municipal_wards',
+      'default_value' => array(
+        0 => array(
+          'tid' => '14',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'inline',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => '0',
+        ),
+        'full' => array(
+          'label' => 'inline',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => '0',
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_city',
+      'label' => 'City',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '39',
       ),
     ),
   );
@@ -1095,11 +1173,18 @@ function slum_maps_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
-          'module' => 'text',
+          'label' => 'hidden',
+          'module' => 'slum_maps',
           'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '3',
+          'type' => 'slum_maps_ward_map',
+          'weight' => '1',
+        ),
+        'full' => array(
+          'label' => 'hidden',
+          'module' => 'slum_maps',
+          'settings' => array(),
+          'type' => 'slum_maps_ward_map',
+          'weight' => '1',
         ),
       ),
       'entity_type' => 'taxonomy_term',
@@ -1126,7 +1211,7 @@ function slum_maps_field_default_fields() {
   $fields['taxonomy_term-municipal_wards-field_representatives'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '3',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_representatives',
@@ -1161,7 +1246,14 @@ function slum_maps_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '2',
+          'weight' => '5',
+        ),
+        'full' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '5',
         ),
       ),
       'entity_type' => 'taxonomy_term',
@@ -1184,17 +1276,83 @@ function slum_maps_field_default_fields() {
     ),
   );
 
+  // Exported field: 'taxonomy_term-municipal_wards-field_ward_office'
+  $fields['taxonomy_term-municipal_wards-field_ward_office'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_ward_office',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '1',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'municipal_wards',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'inline',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '3',
+        ),
+        'full' => array(
+          'label' => 'inline',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '3',
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_ward_office',
+      'label' => 'Ward Office',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '3',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '40',
+      ),
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('About');
-  t('Assistant Municipal Commissioner');
   t('Body');
   t('City');
   t('Development');
   t('Enter a brief description of this slum.');
   t('Enter the city in which this slum is located');
   t('Enter the polygon data for the shape of this slum. This can be found in KML files exported from Google Earth. The numbers that define the polygon look like "73.85934,18.516834,0 73.8580763,18.5168194,0 73.858080,18.51592586,0"');
-  t('Factsheets');
+  t('Factsheet');
   t('If this slum is being redeveloped or relocated, reference the Development project in question.');
   t('Latitude');
   t('Longitude');
@@ -1203,6 +1361,8 @@ function slum_maps_field_default_fields() {
   t('Select the correct ward for this slum');
   t('Shape');
   t('Ward');
+  t('Ward Office');
+  t('Ward Officer');
 
   return $fields;
 }
