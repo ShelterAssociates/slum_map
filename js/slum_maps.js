@@ -1,8 +1,3 @@
-slumMapConstants = {
-  SLUM_COLOUR: "#FF0000",
-  WARD_COLOUR: "#FFFFFF",
-};
-
 /*
  * SlumMap is a class that contains all the functionality related
  * to drawing the map and populating it with polygons/info windows.
@@ -25,12 +20,13 @@ var SlumMap = function (center, zoom) {
 };
 
 SlumMap.prototype = {
-  addWard: function(wardShapeStr) {
-    new SlumMapMarker(this, wardShapeStr, slumMapConstants.WARD_COLOUR, false)
+  addWard: function(wardShapeStr, wardId) {
+    var colour = slumMapUtils.wardColour(wardId);
+    new SlumMapMarker(this, wardShapeStr, colour, false);
   },
 
   addNonClickableSlum: function(slumShapeStr) {
-    new SlumMapMarker(this, slumShapeStr, slumMapConstants.SLUM_COLOUR, false)
+    new SlumMapMarker(this, slumShapeStr, slumMapConstants.SLUM_COLOUR, false);
   },
 
   /**
@@ -50,11 +46,17 @@ SlumMap.prototype = {
   },
 
   /**
-   * fetch ward data
+   * Fetch ward data. If electoral is true, we want electoral
+   * wards. Otherwise, municipal. 
    */
-  addWards: function(cityId) {
+  addWards: function(id, electoral) {
+    if (electoral) 
+      url = '/electoral-ward-data/' + id;
+    else
+      url = '/ward-data/' + id;
+
     jQuery.ajax({
-      url: '/ward-data/' + cityId,
+      url: url,
       dataType: 'json',
       success: function(data) {
         jQuery.each(data['nodes'], function(index, el) {
@@ -63,6 +65,7 @@ SlumMap.prototype = {
       }.bind(this)
     });
   }
+
 };
 
 /**
@@ -104,14 +107,14 @@ SlumMapMarker.prototype = {
 var ClickableWardMarker = function (slumMap, ward) {
   this.slumMap = slumMap;
   var latLngs = slumMapUtils.shapeStringToLatLngs(ward.shape);
-  var colour = slumMapUtils.wardNameToColour(ward.name);
+  var colour = slumMapUtils.wardColour(ward.id);
   if (latLngs.length) {
     this.slumShape = new google.maps.Polygon({
       paths: latLngs,
       clickable: true,
       strokeColor: colour,
-      strokeOpacity: 0.8,
-      strokeWeight: 1,
+      strokeOpacity: 1,
+      strokeWeight: 1.5,
       fillColor: colour,
       fillOpacity: 0.45,
       map: slumMap.map
@@ -155,19 +158,6 @@ var slumMapUtils = {
     }
   },
 
-  wardNameToColour: function(name) {
-    switch (name) {
-      case 'Bibwewadi Ward': 
-        return '#EA7525';
-      case 'Aundh Ward': 
-        return '#4A748C';
-      case 'Bhavani Peth Ward': 
-        return '#392C13';
-      default:
-        return '#0D1B24';
-    }
-  },
-
   /**
    * Create the info window text for a particular slum.
    */
@@ -186,5 +176,27 @@ var slumMapUtils = {
     }
     return text + '</div>';
   },
+
+  wardColour: function(wardId) {
+    wardId = wardId % 5;
+    switch(wardId) {
+      case 0: return slumMapConstants.WARD_COLOUR_0;
+      case 1: return slumMapConstants.WARD_COLOUR_1;
+      case 2: return slumMapConstants.WARD_COLOUR_2;
+      case 3: return slumMapConstants.WARD_COLOUR_3;
+      case 4: return slumMapConstants.WARD_COLOUR_4;
+    }
+    return slumMapConstants.WARD_COLOUR_4;
+  }
 }
+
+slumMapConstants = {
+  SLUM_COLOUR: "#FF0000",
+  WARD_COLOUR: "#FFFFFF",
+  WARD_COLOUR_0: '#FF66FF',
+  WARD_COLOUR_1: '#FFFF00',
+  WARD_COLOUR_2: '#66FF66',
+  WARD_COLOUR_3: '#66CCFF',
+  WARD_COLOUR_4: '#6666FF',
+};
 

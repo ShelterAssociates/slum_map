@@ -174,7 +174,7 @@ function slum_maps_views_default_views() {
   $handler->display->display_options['fields']['field_file']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_file']['delta_reversed'] = 0;
   $handler->display->display_options['fields']['field_file']['field_api_classes'] = 0;
-  /* Field: Content: Ward */
+  /* Field: Content: Municipal Administrative Ward */
   $handler->display->display_options['fields']['field_ward']['id'] = 'field_ward';
   $handler->display->display_options['fields']['field_ward']['table'] = 'field_data_field_ward';
   $handler->display->display_options['fields']['field_ward']['field'] = 'field_ward';
@@ -371,8 +371,10 @@ function slum_maps_views_default_views() {
   $handler->display->display_options['arguments']['tid_1']['validate']['type'] = 'taxonomy_term';
   $handler->display->display_options['arguments']['tid_1']['validate_options']['vocabularies'] = array(
     'municipal_wards' => 'municipal_wards',
-    'categories' => 0,
+    'electoral_wards' => 'electoral_wards',
     'cities' => 0,
+    'land_ownership' => 0,
+    'categories' => 0,
     'gallery_collections' => 0,
     'tags' => 0,
   );
@@ -498,9 +500,48 @@ function slum_maps_views_default_views() {
     'municipal_wards' => 'municipal_wards',
   );
 
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'page');
+  /* Display: Municipal Wards */
+  $handler = $view->new_display('page', 'Municipal Wards', 'page');
+  $handler->display->display_options['display_description'] = 'Muncipal wards by city';
   $handler->display->display_options['path'] = 'ward-data/%';
+
+  /* Display: Electoral Wards */
+  $handler = $view->new_display('page', 'Electoral Wards', 'page_1');
+  $handler->display->display_options['display_description'] = 'electoral wards by city and municipal ward';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Taxonomy term: Municipal Administrative Ward (field_admin_ward) */
+  $handler->display->display_options['arguments']['field_admin_ward_tid']['id'] = 'field_admin_ward_tid';
+  $handler->display->display_options['arguments']['field_admin_ward_tid']['table'] = 'field_data_field_admin_ward';
+  $handler->display->display_options['arguments']['field_admin_ward_tid']['field'] = 'field_admin_ward_tid';
+  $handler->display->display_options['arguments']['field_admin_ward_tid']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['field_admin_ward_tid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_admin_ward_tid']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['field_admin_ward_tid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_admin_ward_tid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_admin_ward_tid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_admin_ward_tid']['specify_validation'] = 1;
+  $handler->display->display_options['arguments']['field_admin_ward_tid']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['field_admin_ward_tid']['validate_options']['vocabularies'] = array(
+    'municipal_wards' => 'municipal_wards',
+    'cities' => 0,
+    'electoral_wards' => 0,
+    'land_ownership' => 0,
+    'categories' => 0,
+    'gallery_collections' => 0,
+    'tags' => 0,
+  );
+  $handler->display->display_options['arguments']['field_admin_ward_tid']['validate_options']['transform'] = 0;
+  $handler->display->display_options['arguments']['field_admin_ward_tid']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['field_admin_ward_tid']['not'] = 0;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Taxonomy vocabulary: Machine name */
+  $handler->display->display_options['filters']['machine_name']['id'] = 'machine_name';
+  $handler->display->display_options['filters']['machine_name']['table'] = 'taxonomy_vocabulary';
+  $handler->display->display_options['filters']['machine_name']['field'] = 'machine_name';
+  $handler->display->display_options['filters']['machine_name']['value'] = array(
+    'electoral_wards' => 'electoral_wards',
+  );
+  $handler->display->display_options['path'] = 'electoral-ward-data/%';
   $export['ward_data'] = $view;
 
   return $export;

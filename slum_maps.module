@@ -163,9 +163,17 @@ function slum_maps_field_formatter_view($obj_type, $object, $field, $instance,
         foreach ($items as $delta => $item) {
             $vars = array(
                 'ward_id' => $object->tid,
-                'city_id' => $object->field_city['und'][0]['tid'],
                 'ward_shape' => trim($item['value']),
             );
+            # could be an electoral ward or a municipal ward. If electoral,
+            # get city id from municipal ward
+            if (property_exists($object, 'field_city')) {
+                $vars['city_id'] = $object->field_city['und'][0]['tid'];
+            } else {
+                $muni_ward = taxonomy_term_load($object->field_admin_ward['und'][0]['tid']);
+                error_log(print_r($muni_ward, TRUE));
+                $vars['city_id'] = $muni_ward->field_city['und'][0]['tid'];
+            }
             $element[$delta] = array('#markup' => theme('ward_map', $vars));
         }
     }
@@ -193,7 +201,6 @@ function template_preprocess_ward_map(&$variables) {
     template_preprocess_slum_map(&$variables);
 }
 function template_preprocess_all_ward_map(&$variables) {
-    error_log(print_r($variables, TRUE));
     template_preprocess_slum_map(&$variables);
 }
 function template_preprocess_individual_slum_map(&$variables) {

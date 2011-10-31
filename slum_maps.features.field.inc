@@ -108,8 +108,8 @@ function slum_maps_field_default_fields() {
       'settings' => array(
         'allowed_values' => array(
           0 => array(
-            'vocabulary' => 'cities',
             'parent' => '0',
+            'vocabulary' => 'cities',
           ),
         ),
       ),
@@ -424,8 +424,8 @@ function slum_maps_field_default_fields() {
       'settings' => array(
         'allowed_values' => array(
           0 => array(
-            'vocabulary' => 'cities',
             'parent' => '0',
+            'vocabulary' => 'cities',
           ),
         ),
       ),
@@ -464,7 +464,7 @@ function slum_maps_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '8',
+        'weight' => '6',
       ),
     ),
   );
@@ -550,6 +550,76 @@ function slum_maps_field_default_fields() {
         'settings' => array(),
         'type' => 'options_select',
         'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-slum-field_electoral_ward'
+  $fields['node-slum-field_electoral_ward'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_electoral_ward',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'parent' => '0',
+            'vocabulary' => 'electoral_wards',
+          ),
+        ),
+      ),
+      'translatable' => '1',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'slum',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 7,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_electoral_ward',
+      'label' => 'Electoral Ward',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '8',
       ),
     ),
   );
@@ -708,7 +778,77 @@ function slum_maps_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '7',
+        'weight' => '5',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-slum-field_land_ownership'
+  $fields['node-slum-field_land_ownership'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_land_ownership',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'parent' => '0',
+            'vocabulary' => 'land_ownership',
+          ),
+        ),
+      ),
+      'translatable' => '1',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'slum',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 8,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_land_ownership',
+      'label' => 'Land Ownership',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '10',
       ),
     ),
   );
@@ -807,7 +947,7 @@ function slum_maps_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'image_image',
-        'weight' => '0',
+        'weight' => '1',
       ),
     ),
   );
@@ -837,8 +977,8 @@ function slum_maps_field_default_fields() {
       'settings' => array(
         'allowed_values' => array(
           0 => array(
-            'vocabulary' => 'municipal_wards',
             'parent' => '0',
+            'vocabulary' => 'municipal_wards',
           ),
         ),
       ),
@@ -867,7 +1007,7 @@ function slum_maps_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_ward',
-      'label' => 'Ward',
+      'label' => 'Municipal Administrative Ward',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -876,8 +1016,8 @@ function slum_maps_field_default_fields() {
         'active' => 1,
         'module' => 'options',
         'settings' => array(),
-        'type' => 'options_select',
-        'weight' => '9',
+        'type' => 'options_buttons',
+        'weight' => '7',
       ),
     ),
   );
@@ -996,6 +1136,190 @@ function slum_maps_field_default_fields() {
     ),
   );
 
+  // Exported field: 'taxonomy_term-electoral_wards-field_admin_ward'
+  $fields['taxonomy_term-electoral_wards-field_admin_ward'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_admin_ward',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'parent' => '0',
+            'vocabulary' => 'municipal_wards',
+          ),
+        ),
+      ),
+      'translatable' => '1',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'electoral_wards',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => '1',
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_admin_ward',
+      'label' => 'Municipal Administrative Ward',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '32',
+      ),
+    ),
+  );
+
+  // Exported field: 'taxonomy_term-electoral_wards-field_geo_polygon'
+  $fields['taxonomy_term-electoral_wards-field_geo_polygon'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_geo_polygon',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '1',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'electoral_wards',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'slum_maps',
+          'settings' => array(),
+          'type' => 'slum_maps_ward_map',
+          'weight' => '2',
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_geo_polygon',
+      'label' => 'Shape',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '34',
+      ),
+    ),
+  );
+
+  // Exported field: 'taxonomy_term-electoral_wards-field_representative'
+  $fields['taxonomy_term-electoral_wards-field_representative'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_representative',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '1',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'electoral_wards',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Enter information about the elected corporator or other representative from this ward.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '0',
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_representative',
+      'label' => 'Representative',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '31',
+      ),
+    ),
+  );
+
   // Exported field: 'taxonomy_term-municipal_wards-field_amc'
   $fields['taxonomy_term-municipal_wards-field_amc'] = array(
     'field_config' => array(
@@ -1090,8 +1414,8 @@ function slum_maps_field_default_fields() {
       'settings' => array(
         'allowed_values' => array(
           0 => array(
-            'vocabulary' => 'cities',
             'parent' => '0',
+            'vocabulary' => 'cities',
           ),
         ),
       ),
@@ -1349,18 +1673,22 @@ function slum_maps_field_default_fields() {
   t('Body');
   t('City');
   t('Development');
+  t('Electoral Ward');
   t('Enter a brief description of this slum.');
+  t('Enter information about the elected corporator or other representative from this ward.');
   t('Enter the city in which this slum is located');
   t('Enter the polygon data for the shape of this slum. This can be found in KML files exported from Google Earth. The numbers that define the polygon look like "73.85934,18.516834,0 73.8580763,18.5168194,0 73.858080,18.51592586,0"');
   t('Factsheet');
   t('If this slum is being redeveloped or relocated, reference the Development project in question.');
+  t('Land Ownership');
   t('Latitude');
   t('Longitude');
+  t('Municipal Administrative Ward');
   t('Photos');
+  t('Representative');
   t('Representatives');
   t('Select the correct ward for this slum');
   t('Shape');
-  t('Ward');
   t('Ward Office');
   t('Ward Officer');
 
