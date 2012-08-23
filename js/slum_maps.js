@@ -77,7 +77,7 @@ var SlumMapMarker = function (slumMap, shape, colour, data) {
   var latLngs = slumMapUtils.shapeStringToLatLngs(shape);
   var clickable = !!data;
   if (latLngs.length) {
-    this.slumShape = new google.maps.Polygon({
+    this.shape = new google.maps.Polygon({
       paths: latLngs,
       clickable: clickable,
       strokeColor: colour,
@@ -89,7 +89,7 @@ var SlumMapMarker = function (slumMap, shape, colour, data) {
     });
 
     if (clickable) {
-      google.maps.event.addListener(this.slumShape, 'click', function(event) {
+      google.maps.event.addListener(this.shape, 'click', function(event) {
         slumMap.infoWindow.setContent(slumMapUtils.slumText(data));
         slumMap.infoWindow.setPosition(event.latLng);
         slumMap.infoWindow.open(slumMap.map);
@@ -101,15 +101,15 @@ SlumMapMarker.prototype = {
   // add instance methods here
 };
 
-/**
- * A SlumMapMarker instance marks a polygon on a SlumMap instance.
- */
 var ClickableWardMarker = function (slumMap, ward) {
   this.slumMap = slumMap;
   var latLngs = slumMapUtils.shapeStringToLatLngs(ward.shape);
+  console.log(latLngs);
+  var centre = slumMapUtils.centerOfLatLngs(latLngs);
+  console.log(centre);
   var colour = slumMapUtils.wardColour(ward.id);
   if (latLngs.length) {
-    this.slumShape = new google.maps.Polygon({
+    this.shape = new google.maps.Polygon({
       paths: latLngs,
       clickable: true,
       strokeColor: colour,
@@ -120,8 +120,26 @@ var ClickableWardMarker = function (slumMap, ward) {
       map: slumMap.map
     });
 
-    google.maps.event.addListener(this.slumShape, 'click', function(event) {
-        window.location = '/taxonomy/term/' + ward.id;
+
+    google.maps.event.addListener(this.shape, 'click', function(event) {
+      window.location = '/taxonomy/term/' + ward.id;
+    });
+
+    var options = {
+      map: slumMap.map, 
+      position: centre,
+      text: '',
+      minZoom: 10,
+      maxZoom: 15
+    };
+    var wardLabel = new MapLabel(options);
+    google.maps.event.addListener(this.shape, 'mouseover', function(event) {
+      wardLabel.text = ward.name;
+      wardLabel.changed('text');
+    });
+    google.maps.event.addListener(this.shape, 'mouseout', function(event) {
+      wardLabel.text = '';
+      wardLabel.changed('text');
     });
   }
 };
@@ -147,15 +165,23 @@ var slumMapUtils = {
   centerOfShapeStr: function(shapeStr) {
     var latLngs = slumMapUtils.shapeStringToLatLngs(shapeStr);
     if (latLngs.length) {
-      var totalLat = 0;
-      var totalLng = 0;
-      jQuery.each(latLngs, function(index, latLng) {
-        totalLat += latLng.lat();
-        totalLng += latLng.lng();
-      });
-      return new google.maps.LatLng(totalLat / latLngs.length, 
-          totalLng / latLngs.length);
+      return slumMapUtils.centerOfLatLngs(latLngs);
     }
+  },
+
+  centerOfLatLngs: function(latLngs) {
+    var totalLat = 0; var totalLng = 0;
+    var measures = 0;
+    jQuery.each(latLngs, function(index, latLng) {
+      lat = latLng.lat(); lng = latLng.lng();
+      if (lat && lng) {
+        measures += 1;
+        totalLat += lat;
+        totalLng += lng;
+      }
+    });
+    return new google.maps.LatLng(totalLat / measures, 
+        totalLng / measures);
   },
 
   /**

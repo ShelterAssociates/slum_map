@@ -192,6 +192,7 @@ function _add_media() {
     $path = drupal_get_path('module', 'slum_maps');
     drupal_add_js('http://maps.googleapis.com/maps/api/js?v=3&sensor=false', 'external');
     drupal_add_js($path . '/js/slum_maps.js');
+    drupal_add_js($path . '/js/maplabel.js');
     drupal_add_css($path . '/css/slum_maps.css');
 }
 function template_preprocess_slum_map(&$variables) {
