@@ -94,6 +94,23 @@ var SlumMapMarker = function (slumMap, shape, colour, data) {
         slumMap.infoWindow.setPosition(event.latLng);
         slumMap.infoWindow.open(slumMap.map);
       });
+      var centre = slumMapUtils.centerOfLatLngs(latLngs);
+      var options = {
+        map: slumMap.map, 
+        position: centre,
+        text: '',
+        minZoom: 10,
+        maxZoom: 15
+      };
+      var slumLabel = new MapLabel(options);
+      google.maps.event.addListener(this.shape, 'mouseover', function(event) {
+        slumLabel.text = this.data.name;
+        slumLabel.changed('text');
+      });
+      google.maps.event.addListener(this.shape, 'mouseout', function(event) {
+        slumLabel.text = '';
+        slumLabel.changed('text');
+      });
     }
   }
 };
