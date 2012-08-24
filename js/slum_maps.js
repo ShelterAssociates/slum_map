@@ -72,8 +72,10 @@ SlumMap.prototype = {
  * A SlumMapMarker instance marks a polygon on a SlumMap instance.
  */
 var SlumMapMarker = function (slumMap, shape, colour, data) {
+  console.log(data);
   this.slumMap = slumMap;
   this.data = data;
+  var name = this.data.title;
   var latLngs = slumMapUtils.shapeStringToLatLngs(shape);
   var clickable = !!data;
   if (latLngs.length) {
@@ -100,11 +102,10 @@ var SlumMapMarker = function (slumMap, shape, colour, data) {
         position: centre,
         text: '',
         minZoom: 10,
-        maxZoom: 15
       };
       var slumLabel = new MapLabel(options);
       google.maps.event.addListener(this.shape, 'mouseover', function(event) {
-        slumLabel.text = this.data.name;
+        slumLabel.text = name;
         slumLabel.changed('text');
       });
       google.maps.event.addListener(this.shape, 'mouseout', function(event) {
