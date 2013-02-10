@@ -37,6 +37,14 @@ function slum_maps_theme($existing, $type, $theme, $path) {
                 'longitude' => NULL,
             ),
         ),
+        'slum_browser' => array(
+            'template' => 'theme/slum-browser',
+            'variables' => array(
+                'city_id' => NULL,
+                'latitude' => NULL,
+                'longitude' => NULL,
+            ),
+        ),
         'individual_slum_map' => array(
             'template' => 'theme/individual-slum-map',
             'variables' => array(
@@ -52,6 +60,14 @@ function slum_maps_theme($existing, $type, $theme, $path) {
 function slum_maps_menu() {
     $items = array();
 
+    $items['slum-browser/%'] = array(
+        'title' => 'Wards by City',
+        'description' => 'Browse slums for a given city',
+        'page callback' => 'slum_maps_browser',
+        'page arguments' => array(1),
+        'access arguments' => array('access content'),
+        'type' => MENU_NORMAL_ITEM,
+    );
     $items['ward-map/%'] = array(
         'title' => 'Wards by City',
         'description' => 'Show a map of slums for a given city',
@@ -138,6 +154,14 @@ function slum_maps_ward_shapes($city_term_name) {
     return theme('all_ward_map', $vars);
 }
 
+/**
+ *
+ */
+function slum_maps_browser($city_term_name) {
+    $vars = _city_vars($city_term_name);
+    return theme('slum_browser', $vars);
+}
+
 
 /**
  * define a custom formatter that can turn a shape definition into a 
@@ -194,6 +218,7 @@ function _add_media() {
     drupal_add_js($path . '/js/slum_maps.js');
     drupal_add_js($path . '/js/maplabel.js');
     drupal_add_css($path . '/css/slum_maps.css');
+    return $path;
 }
 function template_preprocess_slum_map(&$variables) {
     _add_media();
@@ -206,4 +231,11 @@ function template_preprocess_all_ward_map(&$variables) {
 }
 function template_preprocess_individual_slum_map(&$variables) {
     _add_media();
+}
+function template_preprocess_slum_browser(&$variables) {
+    $path = _add_media();
+    drupal_add_js($path . '/jslib/underscore.js');
+    drupal_add_js($path . '/jslib/backbone.js');
+    drupal_add_js($path . '/js/slum_map_util.js');
+    drupal_add_js($path . '/js/models.js');
 }

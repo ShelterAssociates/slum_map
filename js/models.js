@@ -33,7 +33,7 @@ var MapModelView = Backbone.View.extend({
 
 var Slum = Backbone.Model.extend({
   defaults: {
-    title: null,
+    name: null,
     shape: null,
     about: null,
     drupalId: null,
@@ -59,7 +59,7 @@ var Slums = Backbone.Collection.extend({
         shape: node.shape,
         drupalId: node.id,
         about: node.about,
-        title: node.title,
+        name: node.title,
         landOwnership: node.field_land_ownership,
         factsheets: node.factsheets,
         photo: node.field_photos,
@@ -76,6 +76,9 @@ var Ward = Backbone.Model.extend({
     shape: null,
     drupalId: null,
     description: null,
+    wardOffice: null,
+    amc: null,
+    representative: null,
     hovered: false,
   },
   idAttribute: 'drupalId'
@@ -96,6 +99,9 @@ var Wards = Backbone.Collection.extend({
       options.drupalId = item.node.id;
       options.description = item.node.description;
       options.name = item.node.name;
+      options.wardOffice = item.node.field_ward_office || slumMapConstants.NO_DATA;
+      options.amc = item.node.field_amc || slumMapConstants.NO_DATA;
+      options.representative = item.node.field_representative || slumMapConstants.NO_DATA;
       return options;
     }.bind(this))
   }
@@ -161,7 +167,26 @@ var MapShape = Backbone.View.extend({
         zIndex: this.getZIndex(),
         map: this.options.mapView.map
       });
+      google.maps.event.addListener(this.shape, 'click', this.clicked.bind(this));
     }
+    var options = {
+      map: this.options.mapView.map, 
+      position: this.centre,
+      text: '',
+      minZoom: 11,
+      maxZoom: 20,
+      fontSize: 14
+    };
+    this.label = new MapLabel(options);
+    google.maps.event.addListener(this.shape, 'mouseover', function(event) {
+      this.label.text = this.model.get('name');
+      this.label.changed('text');
+    }.bind(this));
+    google.maps.event.addListener(this.shape, 'mouseout', function(event) {
+      this.label.text = '';
+      this.label.changed('text');
+    }.bind(this));
+
     this.customize();
   },
   customize: function() {
@@ -181,6 +206,7 @@ var MapShape = Backbone.View.extend({
     this.shape.setVisible(false);
     // TODO: map will probably still be referring to polygon here. need to do more...
     this.shape = null;
+    this.label = null;
   }
 });
 
@@ -196,27 +222,10 @@ var WardMapShape = MapShape.extend({
     this.model.bind("selected", this.modelWasSelected, this);
     this.model.bind("change:hovered", this.modelHoveredChanged, this);
 
-    var options = {
-      map: this.options.mapView.map, 
-      position: this.centre,
-      text: '',
-      minZoom: 10,
-      maxZoom: 15
-    };
-    var wardLabel = new MapLabel(options);
-    google.maps.event.addListener(this.shape, 'mouseover', function(event) {
-      wardLabel.text = this.model.get('name');
-      wardLabel.changed('text');
-    }.bind(this));
-    google.maps.event.addListener(this.shape, 'mouseout', function(event) {
-      wardLabel.text = '';
-      wardLabel.changed('text');
-    }.bind(this));
-    google.maps.event.addListener(this.shape, 'click', this.clicked.bind(this));
   },
   modelHoveredChanged: function(e) {
-    var fillOpacity = (e.changed.hovered) ? 0.65 : 0.45;
-    this.shape.setOptions({fillOpacity: fillOpacity});
+    var fillColor = (e.changed.hovered) ? '#ffffff' : this.getColour();
+    this.shape.setOptions({fillColor: fillColor});
   },
   modelWasSelected: function(e) {
     this.options.mapModel.set('centre', this.centre);
@@ -247,10 +256,10 @@ var SlumMapShape = MapShape.extend({
   getZIndex: function() {
     return slumMapConstants.SLUM_ZINDEX;
   },
+  clicked: function(event) {
+    new SlumInfoView({el: this.options.infoEl, model: this.model}).render();
+  },
   customize: function() {
-    google.maps.event.addListener(this.shape, 'click', function(event) {
-      new SlumInfoView({el: this.options.infoEl, model: this.model}).render();
-    }.bind(this));
   }
 });
 
@@ -267,16 +276,22 @@ var InfoView = Backbone.View.extend({
   }
 });
 AdminWardInfoView = InfoView.extend({
-  template: "<h3><%= name %></h3><p><%= description %></p>"
+  template: "<h3><%= name %></h3>" + 
+    "<p><%= description %></p>" +
+    "<p><strong>Ward Officer: </strong><%= amc %></p>" +
+    "<p><strong>Ward Office: </strong><%= wardOffice %></p>"
 });
 ElectoralWardInfoView = InfoView.extend({
-  template: "<h3><%= name %></h3><p><%= description %></p>"
+  template: "<h3><%= name %></h3>" + 
+    "<p><%= description %></p>" +
+    "<p><strong>Ward Office: </strong><%= wardOffice %></p>" +
+    "<p><strong>Representative: </strong><%= representative %></p>"
 });
 SlumInfoView = InfoView.extend({
   getContent: function() {
     template = '<div>' +
       '<img src="<%= photo %>" />' +
-      '<h3><%= title %></h3>' +
+      '<h3><%= name %></h3>' +
       '<p><%= about %></p>';
     if (this.model.get('factsheets')) {
       template += '<ul class="factsheet-list">';
@@ -341,6 +356,7 @@ var WardRouter = Backbone.Router.extend({
     this.mapModel = new MapModel();
     this.mapView = new MapModelView({el: jQuery('#slum-map'), model: this.mapModel}).render();
     this.infoEl = jQuery('#info-box');
+    this.citySetUpComplete = false;
   },
   createCollectionView: function(cls, coll, el, viewOptions) {
     viewOptions = viewOptions || {};
@@ -354,6 +370,11 @@ var WardRouter = Backbone.Router.extend({
     });
   },
   setUpCity: function() {
+    if (this.citySetUpComplete) {
+      return;
+    } else {
+      this.on('cityDone', function() {this.citySetUpComplete = true;}, this);
+    }
     this.adminWards = new AdministrativeWards([], {cityId: this.cityId});
 
     this.adminWardList = this.createCollectionView(WardListView,
@@ -366,7 +387,7 @@ var WardRouter = Backbone.Router.extend({
   },
 
   doAfterCitySetUp: function(callback) {
-    if (this.adminWards == undefined) {
+    if (!this.citySetUpComplete) {
       this.setUpCity();
       this.on('cityDone', callback, this);
     } else {
@@ -429,7 +450,3 @@ var WardRouter = Backbone.Router.extend({
   },
 });
 
-jQuery(document).ready(function () {
-  ROUTER = new WardRouter({cityId: 14});
-  Backbone.history.start();
-});

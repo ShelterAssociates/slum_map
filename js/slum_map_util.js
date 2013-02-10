@@ -74,6 +74,7 @@ slumMapConstants = {
   ADMIN_ZINDEX: 500,
   ELECTORAL_ZINDEX: 750,
   SLUM_COLOUR: "#FF0000",
+  NO_DATA: "This information is currently unavailable",
 
   WARD_COLOUR_1: '#9ad867', // green
   WARD_COLOUR_2: '#638cc0', // blue

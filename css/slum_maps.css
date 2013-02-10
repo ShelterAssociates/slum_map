@@ -35,3 +35,18 @@
     float: right;
     margin-left: 10px;
 }
+
+#right-column {
+    width: 250px;
+    float: left;
+}
+#slum-map {
+    width: 700px;
+    height: 500px;
+    margin-left: 260px;
+}
+#info-box {
+    width: 700px;
+    height: 500px;
+    margin-left: 260px;
+}
